@@ -125,7 +125,7 @@
 	{
 		NSString *controlType = [control objectForKey:PVControlTypeKey];
         CGSize controlSize = CGSizeFromString([control objectForKey:PVControlSizeKey]);
-
+		
 		BOOL compactVertical = self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact;
 		CGFloat kDPadTopMargin = 96.0;
 		CGFloat controlOriginY = compactVertical ? self.view.bounds.size.height - controlSize.height : CGRectGetWidth(self.view.frame) + (kDPadTopMargin / 2);
@@ -136,10 +136,14 @@
 			CGFloat bottomPadding = 16;
 			CGFloat dPadOriginY = MIN(controlOriginY - bottomPadding, CGRectGetHeight(self.view.frame) - controlSize.height - bottomPadding);
 			CGRect dPadFrame = CGRectMake(xPadding, dPadOriginY, controlSize.width, controlSize.height);
+            NSNumber *diagonalDirectionsEnabled = (NSNumber *)[control objectForKey:PVControlDiagonalDirectionsEnabledKey];
 			
 			if (!self.dPad)
 			{
 				self.dPad = [[JSDPad alloc] initWithFrame:dPadFrame];
+                if (diagonalDirectionsEnabled) {
+                    self.dPad.diagonalDirectionsEnabled = diagonalDirectionsEnabled.boolValue;
+                }
 				[self.dPad setDelegate:self];
 				[self.dPad setAlpha:alpha];
 				[self.dPad setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin];
