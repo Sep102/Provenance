@@ -239,7 +239,7 @@
 		}
 		else if ([controlType isEqualToString:PVStartButton])
 		{
-            CGFloat yPadding = ([UIDevice isIphoneX] ? 50 : 10);
+			CGFloat yPadding = ([UIDevice isIphoneX] ? 50 : 10);
 			CGRect startFrame = CGRectMake((self.view.frame.size.width - controlSize.width) / 2, self.view.frame.size.height - controlSize.height - yPadding, controlSize.width, controlSize.height);
 			
 			if (!self.startButton)
@@ -261,7 +261,7 @@
 		}
 		else if ([controlType isEqualToString:PVSelectButton])
 		{
-            CGFloat yPadding = ([UIDevice isIphoneX] ? 30 : 10);
+			CGFloat yPadding = ([UIDevice isIphoneX] ? 30 : 10);
 			CGRect selectFrame = CGRectMake((self.view.frame.size.width - controlSize.width) / 2, self.view.frame.size.height - (controlSize.height * 2) - (yPadding * 2), controlSize.width, controlSize.height);
 			
 			if (!self.selectButton)
