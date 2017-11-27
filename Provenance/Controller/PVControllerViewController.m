@@ -60,6 +60,10 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
+    for (UIGestureRecognizer *gr in self.view.window.gestureRecognizers) {
+        gr.delaysTouchesBegan = NO;
+    }
 }
 
 - (void)viewDidLoad
