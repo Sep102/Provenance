@@ -214,10 +214,10 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
         }
     }
 
-    public override func viewDidAppear(animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
 
-        for gr in self.view.window.gestureRecognizers {
+        for gr in self.view.window!.gestureRecognizers! {
             gr.delaysTouchesBegan = false;
         }
     }
@@ -411,6 +411,10 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
                         view.addSubview(dPad2)
                     } else if dPad == nil {
                         let dPad = JSDPad(frame: dPadFrame)
+                        dPad.diagonalDirectionsEnabled = control.PVControlDiagonalDirectionsEnabled ?? true;
+                        if !PVSettingsModel.shared.controllerDiagonalDirectionsEnabled {
+                            dPad.diagonalDirectionsEnabled = false
+                        }
                         if let tintColor = control.PVControlTint {
                             dPad.tintColor = UIColor(hex: tintColor)
                         }

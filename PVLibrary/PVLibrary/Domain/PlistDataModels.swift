@@ -31,6 +31,7 @@ public struct ControlLayoutEntry: Codable {
     public let PVControlTitle: String?
     public let PVControlTint: String?
     public let PVGroupedButtons: [ControlGroupButton]?
+    public let PVControlDiagonalDirectionsEnabled: Bool?
 
     private enum CodingKeys: String, CodingKey {
         case PVControlType
@@ -38,6 +39,7 @@ public struct ControlLayoutEntry: Codable {
         case PVControlTitle
         case PVControlTint
         case PVGroupedButtons
+        case PVControlDiagonalDirectionsEnabled
     }
 }
 
