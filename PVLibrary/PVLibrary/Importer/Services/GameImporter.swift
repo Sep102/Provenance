@@ -113,13 +113,13 @@ public final class GameImporter {
     }
 
     lazy var openVGDB: OESQLiteDatabase = {
-        let bundle = Bundle(identifier: "com.provenance-emu.PVLibrary")!
+        let bundle = Bundle(identifier: "com.andesitellc.PVLibrary")!
         let _openVGDB = try! OESQLiteDatabase(url: bundle.url(forResource: "openvgdb", withExtension: "sqlite")!)
         return _openVGDB
     }()
 
     lazy var sqldb: Connection = {
-        let bundle = Bundle(identifier: "com.provenance-emu.PVLibrary")!
+        let bundle = Bundle(identifier: "com.andesitellc.PVLibrary")!
         let sqlFile = bundle.url(forResource: "openvgdb", withExtension: "sqlite")!
         let sqldb = try! Connection(sqlFile.path, readonly: true)
         return sqldb
@@ -146,7 +146,7 @@ public final class GameImporter {
             }
         #endif
 
-        let bundle = Bundle(identifier: "com.provenance-emu.PVLibrary")!
+        let bundle = Bundle(identifier: "com.andesitellc.PVLibrary")!
         PVEmulatorConfiguration.updateSystems(fromPlists: [bundle.url(forResource: "systems", withExtension: "plist")!])
         PVEmulatorConfiguration.updateCores(fromPlists: corePlists)
     }
