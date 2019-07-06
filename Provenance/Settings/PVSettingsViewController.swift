@@ -128,6 +128,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
                 PVSettingsSwitchRow(text: "Button Colors", key: \PVSettingsModel.buttonTints),
                 PVSettingsSwitchRow(text: "All-Right Shoulders", detailText: .subtitle("Moves L1, L2 & Z to right side"), key: \PVSettingsModel.allRightShoulders),
                 PVSettingsSwitchRow(text: "Haptic Feedback", key: \PVSettingsModel.buttonVibration)
+                PVSettingsSwitchRow(text: "Enable Diagonal Directions", key: \PVSettingsModel.controllerDiagonalDirectionsEnabled)
             ])
         #endif
         controllerRows.append(contentsOf: [

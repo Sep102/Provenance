@@ -394,6 +394,7 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
                 let controlSize: CGSize = NSCoder.cgSize(for: control.PVControlSize)
                 let compactVertical: Bool = traitCollection.verticalSizeClass == .compact
                 let controlOriginY: CGFloat = compactVertical ? view.bounds.size.height - controlSize.height : view.frame.width + (kDPadTopMargin / 2)
+                let diagonalDirectionsEnabled: Bool = NSCoder.Bool(for: control.PVControlDiagonalDrectionsEnabled)
 
                 if controlType == Keys.DPad {
                     let xPadding: CGFloat = safeAreaInsets.left + 5
@@ -414,6 +415,9 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
                         view.addSubview(dPad2)
                     } else if dPad == nil {
                         let dPad = JSDPad(frame: dPadFrame)
+                        if diagonalDirectionsEnabled {
+                            dPad.diagonalDirectionsEnabled = true
+                        }
                         if let tintColor = control.PVControlTint {
                             dPad.tintColor = UIColor(hex: tintColor)
                         }
