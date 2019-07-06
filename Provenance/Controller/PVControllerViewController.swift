@@ -214,6 +214,14 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
         }
     }
 
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated);
+
+        for gr in self.view.window.gestureRecognizers {
+            gr.delaysTouchesBegan = false;
+        }
+    }
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(PVControllerViewController.controllerDidConnect(_:)), name: .GCControllerDidConnect, object: nil)
