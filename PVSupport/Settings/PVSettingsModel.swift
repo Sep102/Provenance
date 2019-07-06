@@ -264,6 +264,7 @@ extension MirroredSettings {
 
     public dynamic var controllerOpacity: CGFloat = 0.8
     public dynamic var buttonTints = true
+    public dynamic var controllerDiagonalDirectionsEnabled = true
 
     #if os(tvOS)
         @objc public dynamic var missingButtonsAlwaysOn = true

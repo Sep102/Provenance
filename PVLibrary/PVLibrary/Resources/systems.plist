@@ -102,6 +102,8 @@
 				<string>PVDPad</string>
 				<key>PVControlSize</key>
 				<string>{180,180}</string>
+                                <key>PVControlDiagonalDirectionsEnabled</key>
+                                <true/>
 			</dict>
 			<dict>
 				<key>PVControlType</key>

@@ -30,6 +30,7 @@ final class JSDPad: UIView {
     weak var delegate: JSDPadDelegate?
 
     private var currentDirection: JSDPadDirection = .none
+    public var diagonalDirectionsEnabled: Bool = true
 
     private lazy var dPadImageView: UIImageView = {
         let dPadImageView = UIImageView(image: UIImage(named: "dPad-None"))
@@ -75,12 +76,30 @@ final class JSDPad: UIView {
     func direction(for point: CGPoint) -> JSDPadDirection {
         let x: CGFloat = point.x
         let y: CGFloat = point.y
-        if (x <= 0) || (x >= bounds.size.width) || (y <= 0) || (y >= bounds.size.height) {
-            return .none
-        }
-        let column = Int((x / (bounds.size.width / 3)))
-        let row = Int((y / (bounds.size.height / 3)))
-        let direction = JSDPadDirection(rawValue: (row * 3) + column + 1)!
+
+		let column = Int((x / (bounds.size.width / 3)))
+		let row = Int((y / (bounds.size.height / 3)))
+		if column < 0 || row < 0 || column > 2 || row > 2 {
+			return currentDirection
+		}
+
+		var direction:JSDPadDirection = JSDPadDirection(rawValue: (row * 3) + column + 1)!
+		if !diagonalDirectionsEnabled && direction != .none {
+			let offset: CGPoint = CGPoint(x: x - bounds.size.width / 2, y: y - bounds.size.height / 2)
+			let angle: CGFloat = atan2(offset.y, offset.x) + .pi - .pi/4
+			if angle < 0 {
+				direction = .left
+			} else if angle < .pi/2 {
+				direction = .up
+			} else if angle < .pi {
+				direction = .right
+			} else if angle < .pi + .pi/2 {
+				direction = .down
+			} else {
+				direction = .left
+			}
+		}
+
         return direction
     }
 

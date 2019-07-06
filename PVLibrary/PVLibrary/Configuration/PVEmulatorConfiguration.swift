@@ -34,6 +34,7 @@ public struct SystemDictionaryKeys {
         public static let ControlTitle = "PVControlTitle"
         public static let ControlTint = "PVControlTint"
         public static let ControlType = "PVControlType"
+        public static let ControlDiagonalDirectionsEnabled = "PVControlDiagonalDirectionsEnabled"
         public static let DPad = "PVDPad"
         public static let GroupedButtons = "PVGroupedButtons"
         public static let LeftShoulderButton = "PVLeftShoulderButton"
