@@ -237,6 +237,20 @@ final class PVSettingsViewController: PVQuickTableViewController {
                                 detailText: .subtitle("Use iOS's EAGLContext multisampling. Slower speed (slightly), smoother edges."),
                                 key: \PVSettingsModel.debugOptions.multiSampling),
 
+			PVSettingsSliderRow(text: "Audio Output Rate",
+								detailText: nil,
+								valueLimits: (min: 0.0, max: 1.0),
+								key: \PVSettingsModel.debugOptions.audioOutputRate),
+
+			PVSettingsSliderRow(text: "Audio Buffer Size",
+								detailText: nil,
+								valueLimits: (min: 0.0, max: 1.0),
+								key: \PVSettingsModel.debugOptions.audioBufferSize),
+
+			PVSettingsSliderRow(text: "Audio Lag",
+								detailText: nil,
+								valueLimits: (min: 0.0, max: 1.0),
+								key: \PVSettingsModel.debugOptions.audioLag),
 //            PVSettingsSwitchRow(text: "Unsupported Cores",
 //                                detailText: .subtitle("Cores that are in development"),
 //                                key: \PVSettingsModel.debugOptions.unsupportedCores)

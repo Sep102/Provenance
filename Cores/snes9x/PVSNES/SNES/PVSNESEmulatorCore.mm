@@ -47,8 +47,8 @@
 #import <AudioUnit/AudioUnit.h>
 #include <pthread.h>
 
-#define SAMPLERATE      32040
-#define SIZESOUNDBUFFER SAMPLERATE / 50 * 4
+//#define SAMPLERATE      32040
+//#define SIZESOUNDBUFFER SAMPLERATE / 50 * 4
 
 static __weak PVSNESEmulatorCore *_current;
 
@@ -62,6 +62,53 @@ static __weak PVSNESEmulatorCore *_current;
 }
 
 @end
+
+uint32 SAMPLERATE()
+{
+	static const int defaultOutputRate = 32040;
+	double outputRateScale = PVSettingsModel.shared.debugOptions.audioOutputRate;
+	if (outputRateScale < 0.0 || outputRateScale > 1.0) {
+		outputRateScale = 0.5;
+	} else if (outputRateScale - 0.5 < 0.05) {
+		outputRateScale = 0.5;
+	}
+
+	int outputRateShift = (int)(2000 * (outputRateScale - 0.5));
+	return (uint32)(defaultOutputRate + outputRateShift);
+}
+
+int SIZESOUNDBUFFER()
+{
+	return SAMPLERATE() / 50 * 4;
+}
+
+int AUDIOBUFFERSIZE()
+{
+	static const int defaultSizeMs = 100;
+	double bufferSizeScale = PVSettingsModel.shared.debugOptions.audioBufferSize;
+	if (bufferSizeScale < 0.0 || bufferSizeScale > 1.0) {
+		bufferSizeScale = 0.5;
+	} else if (bufferSizeScale - 0.5 < 0.05) {
+		bufferSizeScale = 0.5;
+	}
+
+	int bufferSizeShift = (int)(100 * (bufferSizeScale - 0.5));
+	return defaultSizeMs + bufferSizeShift;
+}
+
+int AUDIOLAG()
+{
+	static const int defaultLagMs = 0;
+	double lagScale = PVSettingsModel.shared.debugOptions.audioLag;
+	if (lagScale < 0.0 || lagScale > 1.0) {
+		lagScale = 0.0;
+	} else if (lagScale < 0.05) {
+		lagScale = 0.0;
+	}
+
+	int lagShift  = (int)(100 * lagScale);
+	return defaultLagMs + lagShift;
+}
 
 bool8 S9xDeinitUpdate(int width, int height)
 {
@@ -79,8 +126,8 @@ NSString *SNESEmulatorKeys[] = { @"Up", @"Down", @"Left", @"Right", @"A", @"B", 
 {
 	if ((self = [super init]))
 	{
-		soundBuffer = (UInt16 *)malloc(SIZESOUNDBUFFER * sizeof(UInt16));
-		memset(soundBuffer, 0, SIZESOUNDBUFFER * sizeof(UInt16));
+		soundBuffer = (UInt16 *)malloc(SIZESOUNDBUFFER() * sizeof(UInt16));
+		memset(soundBuffer, 0, SIZESOUNDBUFFER() * sizeof(UInt16));
         _current = self;
 	}
 	
@@ -152,7 +199,7 @@ NSString *SNESEmulatorKeys[] = { @"Up", @"Down", @"Left", @"Right", @"A", @"B", 
     Settings.JustifierMaster        = true;
     Settings.BlockInvalidVRAMAccess = true;
     Settings.HDMATimingHack         = 100;
-    Settings.SoundPlaybackRate      = SAMPLERATE;
+    Settings.SoundPlaybackRate      = SAMPLERATE();
     Settings.Stereo                 = true;
     Settings.SixteenBitSound        = true;
     Settings.Transparency           = true;
@@ -225,7 +272,7 @@ NSString *SNESEmulatorKeys[] = { @"Up", @"Down", @"Left", @"Right", @"A", @"B", 
     /* buffer_ms : buffer size given in millisecond
      lag_ms    : allowable time-lag given in millisecond
      S9xInitSound(macSoundBuffer_ms, macSoundLagEnable ? macSoundBuffer_ms / 2 : 0); */
-    if(!S9xInitSound(100, 0))
+    if(!S9xInitSound(AUDIOBUFFERSIZE(), AUDIOLAG()))
     {
 		ELOG(@"Couldn't init Graphics");
 		NSDictionary *userInfo = @{
@@ -824,7 +871,7 @@ static void FinalizeSamplesAudioCallback(void *)
 
 - (double)audioSampleRate
 {
-    return SAMPLERATE;
+    return SAMPLERATE();
 }
 
 - (NSUInteger)channelCount
