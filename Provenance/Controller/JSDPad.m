@@ -20,6 +20,8 @@
 
 @implementation JSDPad
 
+@synthesize diagonalDirectionsEnabled;
+
 - (id)initWithFrame:(CGRect)frame
 {
 	if ((self = [super initWithFrame:frame]))
@@ -47,6 +49,7 @@
 	[self addSubview:_dPadImageView];
 	
 	_currentDirection = JSDPadDirectionNone;
+    diagonalDirectionsEnabled = YES;
 }
 
 - (void)dealloc
@@ -68,18 +71,29 @@
 {
 	CGFloat x = point.x;
 	CGFloat y = point.y;
-	
-	if (((x < 0) || (x > [self bounds].size.width)) ||
-		((y < 0) || (y > [self bounds].size.height)))
-	{
-		return JSDPadDirectionNone;
-	}
-	
-	NSUInteger column = x / ([self bounds].size.width / 3);
-	NSUInteger row = y / ([self bounds].size.height / 3);
+
+	NSUInteger column = MAX(0, MIN(2, x / (self.bounds.size.width / 3)));
+	NSUInteger row = MAX(0, MIN(2, y / (self.bounds.size.height / 3)));
+	if (column < 0 || row < 0 || column > 2 || row > 2)
+		return _currentDirection;
 
 	JSDPadDirection direction = (row * 3) + column + 1;
-	
+	if (!diagonalDirectionsEnabled && direction != JSDPadDirectionNone) {
+        CGPoint offset = CGPointMake(x - self.bounds.size.width / 2, y - self.bounds.size.height / 2);
+        CGFloat angle = atan2(offset.y, offset.x) + M_PI;
+        if (angle < M_PI_4) {
+            direction = JSDPadDirectionLeft;
+        } else if (angle < M_PI_2 + M_PI_4) {
+            direction = JSDPadDirectionUp;
+        } else if (angle < M_PI + M_PI_4) {
+            direction = JSDPadDirectionRight;
+        } else if (angle < M_PI + M_PI_2 + M_PI_4) {
+            direction = JSDPadDirectionDown;
+        } else {
+            direction = JSDPadDirectionLeft;
+        }
+    }
+
 	return direction;
 }
 

@@ -30,6 +30,7 @@ extern NSString * const kShowGameTitlesKey;
 @property (nonatomic, assign) BOOL autoLoadAutoSaves;
 @property (nonatomic, assign) BOOL disableAutoLock;
 @property (nonatomic, assign) BOOL buttonVibration;
+@property (nonatomic, assign) BOOL controllerDiagonalsEnabled;
 @property (nonatomic, assign) BOOL imageSmoothing;
 @property (nonatomic, assign) BOOL crtFilterEnabled;
 @property (nonatomic, assign) BOOL showRecentGames;

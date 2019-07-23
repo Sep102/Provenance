@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *autoLoadSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *autoLockSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *vibrateSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *controllerDiagonalsSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *imageSmoothing;
 @property (weak, nonatomic) IBOutlet UISwitch *crtFilterSwitch;
 @property (weak, nonatomic) IBOutlet UISlider *opacitySlider;

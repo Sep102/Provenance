@@ -33,6 +33,7 @@
 	[self.opacitySlider setValue:[settings controllerOpacity]];
 	[self.autoLockSwitch setOn:[settings disableAutoLock]];
     [self.vibrateSwitch setOn:[settings buttonVibration]];
+	[self.controllerDiagonalsSwitch setOn:[settings controllerDiagonalsEnabled]];
     [self.imageSmoothing setOn:[settings imageSmoothing]];
     [self.crtFilterSwitch setOn:[settings crtFilterEnabled]];
 	[self.fpsCountSwitch setOn:[settings showFPSCount]];
@@ -111,6 +112,11 @@
 - (IBAction)toggleVibration:(id)sender
 {
     [[PVSettingsModel sharedInstance] setButtonVibration:[self.vibrateSwitch isOn]];
+}
+
+- (IBAction)toggleControllerDiagonals:(id)sender
+{
+	[[PVSettingsModel sharedInstance] setControllerDiagonalsEnabled:[self.controllerDiagonalsSwitch isOn]];
 }
 
 - (IBAction)toggleSmoothing:(id)sender

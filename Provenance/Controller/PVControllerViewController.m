@@ -152,6 +152,13 @@
             if (!self.dPad)
 			{
 				self.dPad = [[JSDPad alloc] initWithFrame:dPadFrame];
+				NSNumber *diagonalDirectionsEnabled = (NSNumber *)[control objectForKey:PVControlDiagonalDirectionsEnabledKey];
+                if (diagonalDirectionsEnabled) {
+                    self.dPad.diagonalDirectionsEnabled = diagonalDirectionsEnabled.boolValue;
+                }
+				if (![[PVSettingsModel sharedInstance] controllerDiagonalsEnabled]) {
+					self.dPad.diagonalDirectionsEnabled = false;
+				}
 				[self.dPad setDelegate:self];
 				[self.dPad setAlpha:alpha];
 				[self.dPad setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin];

@@ -14,6 +14,7 @@ NSString * const kControllerOpacityKey = @"kControllerOpacityKey";
 NSString * const kAskToAutoLoadKey = @"kAskToAutoLoadKey";
 NSString * const kDisableAutoLockKey = @"kDisableAutoLockKey";
 NSString * const kButtonVibrationKey = @"kButtonVibrationKey";
+NSString * const kControllerDiagonalsKey = @"kControllerDiagonalsKey";
 NSString * const kImageSmoothingKey = @"kImageSmoothingKey";
 NSString * const kCRTFilterKey = @"kCRTFilterKey";
 NSString * const kShowRecentGamesKey = @"kShowRecentGamesKey";
@@ -48,6 +49,7 @@ NSString * const kShowGameTitlesKey = @"kShowGameTitlesKey";
                                                                   kControllerOpacityKey : @(0.2),
                                                                   kDisableAutoLockKey : @(NO),
                                                                   kButtonVibrationKey : @(YES),
+																  kControllerDiagonalsKey : @(YES),
                                                                   kImageSmoothingKey : @(NO),
                                                                   kCRTFilterKey : @(NO),
                                                                   kShowRecentGamesKey : @YES,
@@ -62,6 +64,7 @@ NSString * const kShowGameTitlesKey = @"kShowGameTitlesKey";
 		_controllerOpacity = [[NSUserDefaults standardUserDefaults] floatForKey:kControllerOpacityKey];
 		_disableAutoLock = [[NSUserDefaults standardUserDefaults] boolForKey:kDisableAutoLockKey];
         _buttonVibration = [[NSUserDefaults standardUserDefaults] boolForKey:kButtonVibrationKey];
+		_controllerDiagonalsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kControllerDiagonalsKey];
         _imageSmoothing = [[NSUserDefaults standardUserDefaults] boolForKey:kImageSmoothingKey];
         _crtFilterEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kCRTFilterKey];
         _showRecentGames = [[NSUserDefaults standardUserDefaults] boolForKey:kShowRecentGamesKey];
@@ -133,6 +136,13 @@ NSString * const kShowGameTitlesKey = @"kShowGameTitlesKey";
     _buttonVibration = buttonVibration;
     [[NSUserDefaults standardUserDefaults] setBool:_buttonVibration forKey:kButtonVibrationKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setControllerDiagonals:(BOOL)controllerDiagonalsEnabled
+{
+	_controllerDiagonalsEnabled = controllerDiagonalsEnabled;
+	[[NSUserDefaults standardUserDefaults] setBool:_controllerDiagonalsEnabled forKey:kButtonVibrationKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)setImageSmoothing:(BOOL)imageSmoothing
