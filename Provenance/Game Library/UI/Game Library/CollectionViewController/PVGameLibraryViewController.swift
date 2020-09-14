@@ -311,6 +311,8 @@ final class PVGameLibraryViewController: UIViewController, UITextFieldDelegate, 
                     return false
                 }()
                 header.viewModel = .init(title: section.header, collapsable: section.collapsable != nil, collapsed: collapsed)
+                header.backgroundColor = Theme.currentTheme.gameLibraryHeaderBackground
+                header.titleLabel.textColor = Theme.currentTheme.gameLibraryHeaderText
                 #if canImport(RxGesture)
                 if let collapsable = section.collapsable {
                     header.collapseImageView.rx.tapGesture()
@@ -656,6 +658,22 @@ final class PVGameLibraryViewController: UIViewController, UITextFieldDelegate, 
             PVWebServer.shared.stopServers()
         }
 
+        override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            super.traitCollectionDidChange(previousTraitCollection)
+
+            if #available(iOS 13.0, *) {
+                if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                    if traitCollection.userInterfaceStyle == .dark {
+                        Theme.currentTheme = Theme.darkTheme
+                    }
+                    else {
+                        Theme.currentTheme = Theme.lightTheme
+                    }
+                }
+            } else {
+                Theme.currentTheme = Theme.darkTheme
+            }
+       }
     #endif
 
     @IBAction func conflictsButtonTapped(_: Any) {

@@ -121,7 +121,7 @@ struct DarkTheme: iOSTheme {
     var gameLibraryHeaderText: UIColor { return UIColor(hex: "#333")! }
 
     var barButtonItemTint: UIColor? { return UIColor(hex: "#18A9F7") }
-    var navigationBarBackgroundColor: UIColor? { return UIColor(hex: "#1C1C1C") }
+    var navigationBarBackgroundColor: UIColor? { return UIColor.black }
 
     var alertViewBackground: UIColor { return UIColor.darkGray }
     var alertViewText: UIColor { return UIColor.lightGray }
@@ -144,6 +144,14 @@ struct LightTheme: iOSTheme {
 
     let gameLibraryBackground = UIColor.white
     let gameLibraryText: UIColor = UIColor.black
+
+    //var settingsHeaderBackground: UIColor? { return UIColor.black }
+    //var settingsHeaderText: UIColor? { return UIColor(white: 0.5, alpha: 1.0) }
+
+    var settingsCellBackground: UIColor? { return UIColor(white: 0.9, alpha: 0.9) }
+    var settingsCellText: UIColor? { return UIColor.darkGray }
+
+    //var settingsSeperator: UIColor? { return UIColor.black }
 
     let gameLibraryHeaderBackground = UIColor(white: 0.9, alpha: 0.6)
     let gameLibraryHeaderText = UIColor.darkGray

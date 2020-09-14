@@ -85,10 +85,16 @@ final class PVAppDelegate: UIResponder, UIApplicationDelegate {
                 tabBarController.viewControllers = viewControllers
             }
         #else
-//        let currentTheme = PVSettingsModel.shared.theme
-//        Theme.currentTheme = currentTheme.theme
-            Theme.currentTheme = Theme.darkTheme
-        #endif
+            if #available(iOS 13.0, *) {
+                if UITraitCollection.current.userInterfaceStyle == .light {
+                    Theme.currentTheme = Theme.lightTheme
+                } else {
+                    Theme.currentTheme = Theme.darkTheme
+                }
+            } else {
+                Theme.currentTheme = Theme.darkTheme
+            }
+       #endif
 
         // Setup importing/updating library
         let gameImporter = GameImporter.shared
