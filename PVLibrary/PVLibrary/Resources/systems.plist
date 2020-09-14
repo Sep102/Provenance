@@ -1856,19 +1856,19 @@
 			</dict>
 			<dict>
 				<key>PVControlType</key>
-				<string>PVStartButton</string>
-				<key>PVControlTitle</key>
-				<string>Start</string>
-				<key>PVControlSize</key>
-				<string>{60,42}</string>
-			</dict>
-			<dict>
-				<key>PVControlType</key>
 				<string>PVSelectButton</string>
 				<key>PVControlTitle</key>
 				<string>Select</string>
 				<key>PVControlSize</key>
 				<string>{60,42}</string>
+			</dict>
+			<dict>
+				<key>PVControlSize</key>
+				<string>{60,42}</string>
+				<key>PVControlType</key>
+				<string>PVStartButton</string>
+				<key>PVControlTitle</key>
+				<string>Start</string>
 			</dict>
 			<dict>
 				<key>PVControlType</key>

@@ -29,7 +29,7 @@ protocol JSButtonDisplayer {
 }
 
 private typealias Keys = SystemDictionaryKeys.ControllerLayoutKeys
-private let kDPadTopMargin: CGFloat = 96.0
+private let kDPadTopMargin: CGFloat = 125.0
 private let gripControl = false
 
 protocol StartSelectDelegate: class {
@@ -539,14 +539,14 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
             var rightShoulderFrame: CGRect!
 
             if buttonGroup != nil, !(buttonGroup?.isHidden)! {
-                rightShoulderFrame = CGRect(x: view.frame.size.width - controlSize.width - xPadding, y: (buttonGroup?.frame.minY)! - (controlSize.height * 2) - 4, width: controlSize.width, height: controlSize.height)
+                rightShoulderFrame = CGRect(x: view.frame.size.width - controlSize.width - xPadding, y: (buttonGroup?.frame.minY)! - controlSize.height - 4, width: controlSize.width, height: controlSize.height)
 
                 if PVSettingsModel.shared.allRightShoulders, (system.shortName == "GBA" || system.shortName == "VB") {
                     rightShoulderFrame.origin.y += ((buttonGroup?.frame.height)! / 2 - controlSize.height)
                 }
 
             } else {
-                rightShoulderFrame = CGRect(x: view.frame.size.width - controlSize.width - xPadding, y: view.frame.size.height - (controlSize.height * 2) - yPadding, width: controlSize.width, height: controlSize.height)
+                rightShoulderFrame = CGRect(x: view.frame.size.width - controlSize.width - xPadding, y: view.frame.size.height - controlSize.height - yPadding, width: controlSize.width, height: controlSize.height)
             }
 
             if rightShoulderButton == nil {
@@ -565,6 +565,7 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
                 rightShoulderButton.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
                 view.addSubview(rightShoulderButton)
             } else if rightShoulderButton2 == nil, let title = control.PVControlTitle, title == "R2" {
+                rightShoulderFrame.origin.y -= controlSize.height
                 let rightShoulderButton2 = JSButton(frame: rightShoulderFrame)
                 if let tintColor = control.PVControlTint {
                     rightShoulderButton2.tintColor = UIColor(hex: tintColor)
@@ -578,12 +579,15 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
                 rightShoulderButton2.titleEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 4, right: 2)
                 rightShoulderButton2.alpha = alpha
                 rightShoulderButton2.autoresizingMask = [.flexibleBottomMargin, .flexibleLeftMargin]
-                rightShoulderFrame.origin.y += controlSize.height
                 view.addSubview(rightShoulderButton2)
             } else {
-                rightShoulderButton2?.frame = rightShoulderFrame
-                rightShoulderFrame.origin.y += rightShoulderButton!.frame.size.height
-                rightShoulderButton?.frame = rightShoulderFrame
+                if rightShoulderButton2 == nil {
+                    rightShoulderButton?.frame = rightShoulderFrame;
+                } else {
+                    rightShoulderButton?.frame = rightShoulderFrame
+                    rightShoulderFrame.origin.y -= rightShoulderButton2!.frame.size.height
+                    rightShoulderButton2?.frame = rightShoulderFrame
+                }
             }
         }
 
@@ -627,9 +631,9 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
             let yPadding: CGFloat = safeAreaInsets.bottom + 10
             var leftShoulderFrame: CGRect!
             if buttonGroup != nil, !(buttonGroup?.isHidden)! {
-                leftShoulderFrame = CGRect(x: xPadding, y: (buttonGroup?.frame.minY)! - (controlSize.height * 2) - 4, width: controlSize.width, height: controlSize.height)
+                leftShoulderFrame = CGRect(x: xPadding, y: (buttonGroup?.frame.minY)! - controlSize.height - 4, width: controlSize.width, height: controlSize.height)
             } else {
-                leftShoulderFrame = CGRect(x: xPadding, y: view.frame.size.height - (controlSize.height * 2) - yPadding, width: controlSize.width, height: controlSize.height)
+                leftShoulderFrame = CGRect(x: xPadding, y: view.frame.size.height - controlSize.height - yPadding, width: controlSize.width, height: controlSize.height)
             }
 
             if PVSettingsModel.shared.allRightShoulders {
@@ -660,6 +664,7 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
                 leftShoulderButton.autoresizingMask = [.flexibleBottomMargin, .flexibleRightMargin]
                 view.addSubview(leftShoulderButton)
             } else if leftShoulderButton2 == nil, let title = control.PVControlTitle, title == "L2" {
+                leftShoulderFrame.origin.y -= controlSize.height
                 let leftShoulderButton2 = JSButton(frame: leftShoulderFrame)
                 if let tintColor = control.PVControlTint {
                     leftShoulderButton2.tintColor = UIColor(hex: tintColor)
@@ -676,9 +681,13 @@ class PVControllerViewController<T: ResponderClient>: UIViewController, Controll
                 view.addSubview(leftShoulderButton2)
 
             } else {
-                leftShoulderButton2?.frame = leftShoulderFrame
-                leftShoulderFrame.origin.y += leftShoulderButton!.frame.size.height
-                leftShoulderButton?.frame = leftShoulderFrame
+                if leftShoulderButton2 == nil {
+                    leftShoulderButton?.frame = leftShoulderFrame;
+                } else {
+                    leftShoulderButton?.frame = leftShoulderFrame
+                    leftShoulderFrame.origin.y -= leftShoulderButton2!.frame.size.height
+                    leftShoulderButton2?.frame = leftShoulderFrame
+                }
             }
         }
 
