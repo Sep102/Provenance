@@ -62,6 +62,9 @@ public protocol iOSTheme {
     var settingsCellBackground: UIColor? { get }
     var settingsCellText: UIColor? { get }
 
+    var collectionCellBackground: UIColor? { get }
+    var collectionCellText: UIColor? { get }
+
     // Doesn't seem to be themeable
 //    var alertViewBackground : UIColor {get}
 //    var alertViewText : UIColor {get}
@@ -82,6 +85,9 @@ extension iOSTheme {
     var settingsCellBackground: UIColor? { return nil }
     var settingsCellText: UIColor? { return nil }
     var settingsSeperator: UIColor? { return nil }
+
+    var collectionCellBackground: UIColor? { return nil }
+    var collectionCellText: UIColor? { return nil }
 
     var navigationBarStyle: UIBarStyle { return .default }
 
@@ -131,8 +137,11 @@ struct DarkTheme: iOSTheme {
     var settingsHeaderBackground: UIColor? { return UIColor.black }
     var settingsHeaderText: UIColor? { return UIColor(white: 0.5, alpha: 1.0) }
 
-    var settingsCellBackground: UIColor? { return UIColor(hex: "#292929")! }
+    var settingsCellBackground: UIColor? { return UIColor(hex: "#292929") }
     var settingsCellText: UIColor? { return UIColor(white: 0.8, alpha: 1.0) }
+
+    var collectionCellBackground: UIColor? { return UIColor(hex: "#292929") }
+    var collectionCellText: UIColor? { return UIColor(white: 0.8, alpha: 1.0) }
 
     var settingsSeperator: UIColor? { return UIColor.black }
 }
@@ -145,11 +154,14 @@ struct LightTheme: iOSTheme {
     let gameLibraryBackground = UIColor.white
     let gameLibraryText: UIColor = UIColor.black
 
-    //var settingsHeaderBackground: UIColor? { return UIColor.black }
-    //var settingsHeaderText: UIColor? { return UIColor(white: 0.5, alpha: 1.0) }
+    var settingsHeaderBackground: UIColor? { return UIColor(white: 0.95, alpha: 1.0) }
+    var settingsHeaderText: UIColor? { return UIColor.lightGray }
 
-    var settingsCellBackground: UIColor? { return UIColor(white: 0.9, alpha: 0.9) }
-    var settingsCellText: UIColor? { return UIColor.darkGray }
+    var collectionCellBackground: UIColor? { return UIColor(white: 0.9, alpha: 0.9 ) }
+    var collectionCellText: UIColor? { return UIColor.darkGray }
+
+    var settingsCellBackground: UIColor? { return UIColor.white }
+    var settingsCellText: UIColor? { return UIColor.black }
 
     //var settingsSeperator: UIColor? { return UIColor.black }
 

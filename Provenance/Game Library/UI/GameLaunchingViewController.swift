@@ -617,13 +617,13 @@ extension GameLaunchingViewController where Self: UIViewController {
                     // Add a save this setting toggle
                     alert.addTextField { textField in
                         textField.text = "Auto Load Saves"
-                        textField.backgroundColor = Theme.currentTheme.settingsCellBackground
-                        textField.textColor = Theme.currentTheme.settingsCellText
-                        textField.tintColor = Theme.currentTheme.settingsCellBackground
+                        textField.backgroundColor = Theme.currentTheme.collectionCellBackground
+                        textField.textColor = Theme.currentTheme.collectionCellText
+                        textField.tintColor = Theme.currentTheme.collectionCellBackground
                         textField.rightViewMode = .always
                         textField.rightView = switchControl
                         textField.borderStyle = .none
-                        textField.layer.borderColor = Theme.currentTheme.settingsCellBackground!.cgColor
+                        textField.layer.borderColor = Theme.currentTheme.collectionCellBackground!.cgColor
                         textField.delegate = textEditBlocker // Weak ref
 
                         switchControl.translatesAutoresizingMaskIntoConstraints = false

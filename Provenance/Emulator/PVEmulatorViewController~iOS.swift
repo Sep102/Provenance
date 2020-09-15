@@ -50,7 +50,7 @@ public final class EmulatorActionCell: ActionCell {
     }
 
     func initialize() {
-        backgroundColor = Theme.currentTheme.settingsCellBackground?.withAlphaComponent(0.3)
+        backgroundColor = Theme.currentTheme.collectionCellBackground?.withAlphaComponent(0.3)
         let backgroundView = UIView()
         backgroundView.backgroundColor = backgroundColor
         selectedBackgroundView = backgroundView
