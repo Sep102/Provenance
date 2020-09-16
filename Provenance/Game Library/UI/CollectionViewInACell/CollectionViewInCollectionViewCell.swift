@@ -174,8 +174,14 @@ class CollectionViewInCollectionViewCell<Item: SubCellItem>: UICollectionViewCel
         let pageIndicator = PillPageControl(frame: CGRect(origin: CGPoint(x: bounds.midX - 38.2, y: bounds.maxY - 18), size: CGSize(width: 38, height: PageIndicatorHeight)))
         pageIndicator.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         pageIndicator.translatesAutoresizingMaskIntoConstraints = false
-        pageIndicator.activeTint = UIColor(white: 1.0, alpha: 0.9)
-        pageIndicator.activeTint = UIColor(white: 1.0, alpha: 0.3)
+
+       if let pageIndicatorActiveTint = Theme.currentTheme.pageIndicatorActiveTint {
+           pageIndicator.activeTint = pageIndicatorActiveTint
+       }
+
+       if let pageIndicatorInactiveTint = Theme.currentTheme.pageIndicatorInactiveTint {
+           pageIndicator.inactiveTint = pageIndicatorInactiveTint
+       }
 
         #if os(iOS)
             //		pageIndicator.currentPageIndicatorTintColor = Theme.currentTheme.defaultTintColor

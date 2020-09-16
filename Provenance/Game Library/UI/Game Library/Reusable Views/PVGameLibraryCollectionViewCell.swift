@@ -465,6 +465,10 @@ final class PVGameLibraryCollectionViewCell: UICollectionViewCell {
         let originalArtworkURL: String = game.originalArtworkURL
         if PVSettingsModel.shared.showGameTitles {
             titleLabel.text = game.title
+
+            if let collectionCellLabelText = Theme.currentTheme.collectionCellLabelText {
+                titleLabel.textColor = collectionCellLabelText
+            }
         }
 
         // TODO: May be renabled later
