@@ -267,6 +267,10 @@ final class PVSaveStatesViewController: UICollectionViewController {
             break
         }
 
+        reusableView.label.backgroundColor = Theme.currentTheme.gameLibraryHeaderBackground
+        reusableView.label.textColor = Theme.currentTheme.gameLibraryHeaderText
+        reusableView.backgroundColor = Theme.currentTheme.gameLibraryHeaderBackground
+
         return reusableView
     }
 

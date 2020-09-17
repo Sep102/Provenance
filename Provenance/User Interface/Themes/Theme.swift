@@ -71,9 +71,9 @@ public protocol iOSTheme {
     var collectionCellLabelText: UIColor? { get }
 
     // Doesn't seem to be themeable
-//    var alertViewBackground : UIColor {get}
-//    var alertViewText : UIColor {get}
-//    var alertViewTintColor : UIColor {get}
+    //var alertViewBackground : UIColor? { get }
+    var alertViewText : UIColor? { get }
+    //var alertViewTintColor : UIColor? { get }
 }
 
 // Default implimentnations
@@ -100,11 +100,16 @@ extension iOSTheme {
 
     var navigationBarStyle: UIBarStyle { return .default }
 
-    // Default to default tint (which defaults to nil)
     var barTint: UIColor? { return nil }
-    var barButtonItemTint: UIColor? { return defaultTintColor }
+
+    var alertViewText: UIColor? { return nil }
+
+    // Default to default tint (which defaults to nil)
     var alertViewTintColor: UIColor? { return defaultTintColor }
+    var barButtonItemTint: UIColor? { return defaultTintColor }
     var switchON: UIColor? { return defaultTintColor }
+
+    var statusBarStyle: UIStatusBarStyle { return UIStatusBarStyle.default }
 
     func setGlobalTint() {
         // Get app delegate
@@ -112,10 +117,6 @@ extension iOSTheme {
 
         // Set tint color
         sharedApp.delegate?.window??.tintColor = defaultTintColor
-    }
-
-    var statusBarStyle: UIStatusBarStyle {
-        return UIStatusBarStyle.default
     }
 }
 
@@ -141,8 +142,8 @@ struct DarkTheme: iOSTheme {
     var barButtonItemTint: UIColor? { return UIColor(hex: "#18A9F7") }
     var navigationBarBackgroundColor: UIColor? { return UIColor.black }
 
-    var alertViewBackground: UIColor { return UIColor.darkGray }
-    var alertViewText: UIColor { return UIColor.lightGray }
+    var alertViewBackground: UIColor? { return UIColor.darkGray }
+    var alertViewText: UIColor? { return UIColor(hex: "#CCC") }
 
     var statusBarStyle: UIStatusBarStyle { return UIStatusBarStyle.lightContent }
 
@@ -154,8 +155,7 @@ struct DarkTheme: iOSTheme {
 
     var collectionCellBackground: UIColor? { return UIColor(hex: "#292929") }
     var collectionCellText: UIColor? { return UIColor(white: 0.8, alpha: 1.0) }
-    var collectionCellLabelText: UIColor? { return UIColor(hex: "#AAA" ) }
-
+    var collectionCellLabelText: UIColor? { return UIColor(hex: "#CCC" ) }
 
     var settingsSeperator: UIColor? { return UIColor.black }
 }
@@ -164,6 +164,8 @@ struct LightTheme: iOSTheme {
     let theme = Themes.light
 
     var defaultTintColor: UIColor? { return UIColor(hex: "#007aff") } // iOS Blue
+
+    var navigationBarStyle: UIBarStyle { return UIBarStyle.default }
 
     //var switchON: UIColor? { return UIColor(hex: "#18A9F7") }
     //var switchThumb: UIColor? { return UIColor(hex: "#eee") }
@@ -179,9 +181,12 @@ struct LightTheme: iOSTheme {
 
     var collectionCellBackground: UIColor? { return UIColor(white: 0.9, alpha: 0.9 ) }
     var collectionCellText: UIColor? { return UIColor.darkGray }
+    var collectionCellLabelText: UIColor? { return UIColor.black }
 
     var settingsCellBackground: UIColor? { return UIColor.white }
     var settingsCellText: UIColor? { return UIColor.black }
+
+    var alertViewText: UIColor? { return UIColor.black }
 
     let gameLibraryHeaderBackground = UIColor(white: 0.9, alpha: 0.6)
     let gameLibraryHeaderText = UIColor.darkGray
@@ -193,6 +198,7 @@ public final class Theme {
         didSet {
             setTheme(currentTheme)
             UIApplication.shared.refreshAppearance(animated: true)
+            UIApplication.shared.refreshAppearance(animated: false)
         }
     }
 
@@ -291,7 +297,9 @@ public final class Theme {
         // Game Library Main
         appearance(inAny: [PVGameLibraryCollectionViewCell.self]) {
             UILabel.appearance {
-                $0.textColor = theme.gameLibraryText
+                if let collectionCellLabelText = theme.collectionCellLabelText {
+                    $0.textColor = collectionCellLabelText
+                }
             }
         }
 

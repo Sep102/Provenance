@@ -186,6 +186,7 @@ final class PVGameLibraryViewController: UIViewController, UITextFieldDelegate, 
 
         #if os(iOS)
             navigationController?.navigationBar.barTintColor = Theme.currentTheme.barTint
+            navigationController?.navigationBar.isTranslucent = true
             navigationItem.leftBarButtonItem?.tintColor = Theme.currentTheme.barButtonItemTint
 
             NotificationCenter.default.addObserver(forName: NSNotification.Name.PVInterfaceDidChangeNotification, object: nil, queue: nil, using: { (_: Notification) -> Void in
@@ -1421,6 +1422,11 @@ extension PVGameLibraryViewController: UITableViewDataSource {
 
             cell.textLabel?.text = sortOption.description
             cell.accessoryType = indexPath.row == (try! currentSort.value()).row ? .checkmark : .none
+
+            cell.backgroundColor = Theme.currentTheme.settingsCellBackground
+            cell.textLabel?.backgroundColor = Theme.currentTheme.settingsCellBackground
+            cell.textLabel?.textColor = Theme.currentTheme.settingsCellText
+
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "viewOptionsCell", for: indexPath)
@@ -1441,6 +1447,10 @@ extension PVGameLibraryViewController: UITableViewDataSource {
             default:
                 fatalError("Invalid row")
             }
+
+            cell.backgroundColor = Theme.currentTheme.settingsCellBackground
+            cell.textLabel?.backgroundColor = Theme.currentTheme.settingsCellBackground
+            cell.textLabel?.textColor = Theme.currentTheme.settingsCellText
 
             return cell
         }

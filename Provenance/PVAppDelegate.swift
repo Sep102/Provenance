@@ -85,6 +85,8 @@ final class PVAppDelegate: UIResponder, UIApplicationDelegate {
                 tabBarController.viewControllers = viewControllers
             }
         #else
+           Theme.currentTheme = Theme.lightTheme
+           Theme.currentTheme = Theme.darkTheme
             if #available(iOS 13.0, *) {
                 if UITraitCollection.current.userInterfaceStyle == .light {
                     Theme.currentTheme = Theme.lightTheme

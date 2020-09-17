@@ -80,6 +80,10 @@ final class PVSaveStateCollectionViewCell: UICollectionViewCell {
                 // #else
                 coreLabel.text = system.shortName
                 // #endif
+
+                timeStampLabel.textColor = Theme.currentTheme.collectionCellText
+                titleLabel.textColor = Theme.currentTheme.collectionCellLabelText
+                coreLabel.textColor = Theme.currentTheme.collectionCellLabelText
             }
 
             setNeedsLayout()

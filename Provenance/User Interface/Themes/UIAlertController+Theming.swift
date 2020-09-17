@@ -42,8 +42,8 @@ import UIKit
         // Set how you want your defaults to be for all instances of UIAlertController
         func setDefaultOverrides() {
             let overrides = UIAlertControllerOverrides(backgroundColor: Theme.currentTheme.settingsCellBackground,
-                                                       textColor: Theme.currentTheme.settingsCellText,
-                                                       borderColor: Theme.currentTheme.settingsCellText?.withAlphaComponent(0.6),
+                                                       textColor: Theme.currentTheme.alertViewText,
+                                                       borderColor: Theme.currentTheme.alertViewText?.withAlphaComponent(0.6),
                                                        borderWidth: 0.0,
                                                        cornerRadius: 10.0,
                                                        cancelBackgroundColor: Theme.currentTheme.settingsCellBackground,
@@ -73,10 +73,16 @@ import UIKit
 
             // TODO: Could do the same for 'destructive' types
 
-            view.tintColor = settings.textColor
+            if let textColor = settings.textColor {
+                view.tintColor = textColor
+            }
 
             AlertContentViews.forEach {
 //                print("AlertContentSubview \(String(describing: $0))")
+
+                if let textColor = settings.textColor {
+                    $0?.tintColor = textColor
+                }
 
                 $0?.subviews.forEach({ subview in
                     if let backgroundColor = settings.backgroundColor {
