@@ -423,6 +423,7 @@ extension GameLaunchingViewController where Self: UIViewController {
                     try! RomDatabase.sharedInstance.writeTransaction {
                         system.userPreferredCoreID = core.identifier
                     }
+                    RomDatabase.sharedInstance.refresh()
                     self.presentEMU(withCore: core, forGame: game)
                 })
 

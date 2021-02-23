@@ -1063,7 +1063,7 @@ public extension GameImporter {
 
     static var charset: CharacterSet = {
         var c = CharacterSet.punctuationCharacters
-        c.remove(charactersIn: ",-+&.'")
+        c.remove(charactersIn: ",-+&.'_")
         return c
     }()
 }
@@ -1186,6 +1186,31 @@ extension GameImporter {
 
         do {
             try database.add(game, update: true)
+            try? database.writeTransaction {
+                if system.coreStructs.count > 0 {
+                    let core = system.userPreferredCore ?? system.coreStructs[0]
+                    try? FileManager.default.contentsOfDirectory(at: PVEmulatorConfiguration.saveStatePath(forROM: path),
+                                                                 includingPropertiesForKeys: nil,
+                                                                 options: []).filter({ $0.pathExtension == "svs" }).forEach {
+                                                                    file in
+                                                                    var image: PVImageFile? = nil
+
+                                                                    let imagePath = file.deletingPathExtension().appendingPathExtension("jpg")
+                                                                    if FileManager.default.fileExists(atPath: imagePath.path) {
+                                                                        image = PVImageFile(withURL: imagePath)
+                                                                    }
+
+                                                                    let saveState = PVSaveState(withGame: game, core: core.asRealm(), file: PVFile(withURL: file), image: image, isAutosave: false)
+
+                                                                    let fileComponents = file.lastPathComponent.components(separatedBy: ".")
+                                                                    if fileComponents.count > 2, let interval = Int(fileComponents[1]) {
+                                                                        saveState.date = Date(timeIntervalSinceReferenceDate: TimeInterval(interval))
+                                                                    }
+
+                                                                    try? database.add(saveState)
+                    }
+                }
+            }
             //			RomDatabase.sharedInstance.library.games.append(game) // Fuck this why is it crashing
         } catch {
             ELOG("Couldn't add new game \(title): \(error.localizedDescription)")

@@ -894,42 +894,57 @@ final class PVGameLibraryViewController: UIViewController, UITextFieldDelegate, 
 
         let database = RomDatabase.sharedInstance
         do {
-            try database.deleteAll()
+            try database.writeTransaction {
+                try? database.deleteAll( PVGame.self )
+                try? database.deleteAll( PVRecentGame.self )
+                try? database.deleteAll( PVSaveState.self )
+            }
         } catch {
             ELOG("Failed to delete all objects. \(error.localizedDescription)")
         }
 
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
+
+            NSSetUncaughtExceptionHandler(nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                exit(0)
+            }
         }
     }
 
     private func longPressed(item: Section.Item, at indexPath: IndexPath, point: CGPoint) {
         let cell = collectionView!.cellForItem(at: indexPath)!
-        let actionSheet = contextMenu(for: item, cell: cell, point: point)
 
-        if traitCollection.userInterfaceIdiom == .pad {
-            actionSheet.popoverPresentationController?.sourceView = cell
-            actionSheet.popoverPresentationController?.sourceRect = (collectionView?.layoutAttributesForItem(at: indexPath)?.bounds ?? CGRect.zero)
+        if let actionSheet = contextMenu(for: item, cell: cell, point: point) {
+            if traitCollection.userInterfaceIdiom == .pad {
+                actionSheet.popoverPresentationController?.sourceView = cell
+                actionSheet.popoverPresentationController?.sourceRect = (collectionView?.layoutAttributesForItem(at: indexPath)?.bounds ?? CGRect.zero)
+            }
+
+            present(actionSheet, animated: true)
         }
-
-        present(actionSheet, animated: true)
     }
 
-    private func contextMenu(for item: Section.Item, cell: UICollectionViewCell, point: CGPoint) -> UIAlertController {
+    private func contextMenu(for item: Section.Item, cell: UICollectionViewCell, point: CGPoint) -> UIAlertController? {
         switch item {
         case .game(let game):
             return contextMenu(for: game, sender: cell)
         case .favorites:
-            let game: PVGame = (cell as! CollectionViewInCollectionViewCell).item(at: point)!
-            return contextMenu(for: game, sender: cell)
+            if let game: PVGame = (cell as! CollectionViewInCollectionViewCell).item(at: point) {
+                return contextMenu(for: game, sender: cell)
+            }
         case .saves:
-            let saveState: PVSaveState = (cell as! CollectionViewInCollectionViewCell).item(at: point)!
-            return contextMenu(for: saveState)
+            if let saveState: PVSaveState = (cell as! CollectionViewInCollectionViewCell).item(at: point) {
+                return contextMenu(for: saveState)
+            }
         case .recents:
-            let game: PVRecentGame = (cell as! CollectionViewInCollectionViewCell).item(at: point)!
-            return contextMenu(for: game.game, sender: cell)
+            if let game: PVRecentGame = (cell as! CollectionViewInCollectionViewCell).item(at: point) {
+                return contextMenu(for: game.game, sender: cell)
+            }
         }
+
+        return nil
     }
 
     private func contextMenu(for game: PVGame, sender: Any?) -> UIAlertController {

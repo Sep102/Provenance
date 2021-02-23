@@ -72,10 +72,6 @@ final class PVSaveStatesViewController: UICollectionViewController {
         autoSaves = allSaves.filter("isAutosave == true")
         manualSaves = allSaves.filter("isAutosave == false")
 
-        if screenshot == nil {
-            navigationItem.rightBarButtonItem = nil
-        }
-
 //
 //        let dataSource = RxCollectionViewRealmDataSource(sections: [
 //            RxRealmDataSourceSection<PVSaveState>(title: "Auto Saves",
@@ -110,18 +106,8 @@ final class PVSaveStatesViewController: UICollectionViewController {
             switch changes {
             case .initial:
                 self.collectionView?.reloadData()
-            case .update(_, let deletions, _, _):
-                guard !deletions.isEmpty else {
-                    return
-                }
-
-                let fromItem = { (item: Int) -> IndexPath in
-                    let section = 0
-                    return IndexPath(item: item, section: section)
-                }
-                self.collectionView?.performBatchUpdates({
-                    self.collectionView?.deleteItems(at: deletions.map(fromItem))
-                }, completion: nil)
+            case .update(_, _, _, _):
+                self.collectionView?.reloadData()
             case let .error(error):
                 ELOG("Error updating save states: " + error.localizedDescription)
             }
@@ -160,7 +146,7 @@ final class PVSaveStatesViewController: UICollectionViewController {
         if let emulatorViewController = presentingViewController as? PVEmulatorViewController {
             emulatorViewController.core.setPauseEmulation(false)
             emulatorViewController.isShowingMenu = false
-            emulatorViewController.enableContorllerInput(false)
+            emulatorViewController.enableControllerInput(false)
         }
     }
 

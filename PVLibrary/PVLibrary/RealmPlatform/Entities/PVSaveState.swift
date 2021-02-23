@@ -47,15 +47,18 @@ public final class PVSaveState: Object, Filed, LocalFileProvider {
         do {
             // Temp store these URLs
             let fileURL = state.file.url
-            let imageURl = state.image?.url
+            let imageURL = state.image?.url
 
             let database = RomDatabase.sharedInstance
             try database.delete(state)
 
             try FileManager.default.removeItem(at: fileURL)
-            if let imageURl = imageURl {
-                try FileManager.default.removeItem(at: imageURl)
+            if let imageURL = imageURL {
+                try FileManager.default.removeItem(at: imageURL)
             }
+
+            let jsonURL = fileURL.appendingPathExtension("json")
+            try? FileManager.default.removeItem(at: jsonURL)
         } catch {
             ELOG("Failed to delete PVState")
             throw error

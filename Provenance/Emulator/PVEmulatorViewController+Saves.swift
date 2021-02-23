@@ -159,12 +159,9 @@ extension PVEmulatorViewController {
                 // Delete the oldest auto-saves over 5 count
                 try realm.write {
                     let maxAutoSaves = 5
-                    if self.game.autoSaves.count > maxAutoSaves {
-                        let oldAutoSaves = Array(self.game.autoSaves.suffix(from: maxAutoSaves))
-                        oldAutoSaves.forEach {
-                            DLOG("Deleting old auto save of \($0.game.title) dated: \($0.date.description)")
-                        }
-                        realm.delete(oldAutoSaves)
+                    try self.game.autoSaves.dropFirst(maxAutoSaves).forEach {
+                        DLOG("Deleting old auto save of \($0.game.title) dated: \($0.date.description)")
+                        try $0.delete()
                     }
                 }
             } catch {
@@ -199,7 +196,7 @@ extension PVEmulatorViewController {
                 let completion = {
                     self.core.setPauseEmulation(false)
                     self.isShowingMenu = false
-                    self.enableContorllerInput(false)
+                    self.enableControllerInput(false)
                 }
 
                 guard success else {
@@ -232,7 +229,7 @@ extension PVEmulatorViewController {
         dismiss(animated: true, completion: nil)
         core.setPauseEmulation(false)
         isShowingMenu = false
-        enableContorllerInput(false)
+        enableControllerInput(false)
     }
 
     func saveStatesViewControllerCreateNewState(_ saveStatesViewController: PVSaveStatesViewController, completion: @escaping SaveCompletion) {
