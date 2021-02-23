@@ -28,9 +28,14 @@ public extension CoreOptional { // where Self:PVEmulatorCore {
             return savedOption
         } else {
             let currentOptions: [CoreOption] = options
-            let foundOption = findOption(forKey: option, options: currentOptions)
-            return UserDefaults.standard.object(forKey: "\(className).\(foundOption!)") as? T
+			if let foundOption = findOption(forKey: option, options: currentOptions) {
+				if let savedOption = UserDefaults.standard.object(forKey: "\(className).\(foundOption)") as? T {
+					return savedOption
+				}
+			}
         }
+
+		return nil
     }
 
     static func setValue(_ value: Any?, forOption option: CoreOption) {

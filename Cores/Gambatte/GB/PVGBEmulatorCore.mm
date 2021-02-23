@@ -49,7 +49,7 @@ uint32_t gb_pad[PVGBButtonCount];
 }
 - (void)outputAudio:(unsigned)frames;
 - (void)applyCheat:(NSString *)code;
-- (void)loadPalette;
+- (BOOL)loadPalette;
 @end
 
 @implementation PVGBEmulatorCore
@@ -138,10 +138,8 @@ public:
     }
 
     // Load built-in GBC palette for monochrome games if supported
-	if (gb.isCgb()) {
+	if (!gb.isCgb() && [self loadPalette] == NO) {
 		[self setPalette];
-	} else {
-		[self loadPalette];
 	}
     return YES;
 }
@@ -530,7 +528,7 @@ NSMutableDictionary *gb_cheatlist = [[NSMutableDictionary alloc] init];
         gb.setGameShark(s);
 }
 
-- (void)loadPalette
+- (BOOL)loadPalette
 {
     std::string str = gb.romTitle(); // read ROM internal title
     const char *internal_game_name = str.c_str();
@@ -539,7 +537,8 @@ NSMutableDictionary *gb_cheatlist = [[NSMutableDictionary alloc] init];
     unsigned short *gbc_bios_palette = NULL;
     gbc_bios_palette = const_cast<unsigned short *>(findGbcTitlePal(internal_game_name));
 
-    if (gbc_bios_palette == 0)
+	BOOL has_builtin_palette = gbc_bios_palette != 0;
+    if (has_builtin_palette == NO)
     {
         // no custom palette found, load the default (Original Grayscale)
         gbc_bios_palette = const_cast<unsigned short *>(findGbcDirPal("GBC - Grayscale"));
@@ -554,6 +553,8 @@ NSMutableDictionary *gb_cheatlist = [[NSMutableDictionary alloc] init];
             gb.setDmgPaletteColor(palnum, colornum, rgb32);
         }
     }
+
+	return has_builtin_palette;
 }
 
 @end
