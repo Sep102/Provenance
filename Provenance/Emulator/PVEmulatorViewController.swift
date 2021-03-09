@@ -361,9 +361,20 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
                 view.addGestureRecognizer(aRecognizer)
             }
         #endif
-        GCController.controllers().filter({ $0.vendorName != "Remote" }).forEach { [unowned self] in
-            $0.controllerPausedHandler = { controller in
-                self.controllerPauseButtonPressed(controller)
+
+		GCController.controllers().filter({ $0.vendorName != "Remote" }).forEach { [unowned self] controller in
+            if #available(iOS 13.0, *) {} else {
+                controller.controllerPausedHandler = { _ in
+                    self.controllerPauseButtonPressed(controller)
+                }
+            }
+
+            if let buttonHome = controller.extendedGamepad?.getButtonHome() {
+                buttonHome.pressedChangedHandler = { button, value, pressed in
+                    if pressed {
+                        self.controllerPauseButtonPressed(controller);
+                    }
+                }
             }
         }
     }
@@ -691,13 +702,25 @@ extension PVEmulatorViewController {
         // 8Bitdo controllers don't have a pause button, so don't hide the menu
         if !(controller is PViCade8BitdoController || controller is PViCade8BitdoZeroController) {
             menuButton?.isHidden = true
-            // In instances where the controller is connected *after* the VC has been shown, we need to set the pause handler
-            // Except for the Apple Remote, where it's handled in the menuGestureRecognizer
-            if controller?.vendorName != "Remote" {
-                controller?.controllerPausedHandler = { [unowned self] controller in
-                    self.controllerPauseButtonPressed(controller)
+
+            if #available(iOS 13.0, *) {} else {
+                // In instances where the controller is connected *after* the VC has been shown, we need to set the pause handler
+                // Except for the Apple Remote, where it's handled in the menuGestureRecognizer
+                if controller?.vendorName != "Remote" {
+                    controller?.controllerPausedHandler = { [unowned self] controller in
+                        self.controllerPauseButtonPressed(controller)
+                    }
                 }
             }
+
+            if let buttonHome = controller?.extendedGamepad?.getButtonHome() {
+                buttonHome.pressedChangedHandler = { button, value, pressed in
+                    if pressed {
+                        self.controllerPauseButtonPressed(controller);
+                    }
+                }
+            }
+
             #if os(iOS)
                 if #available(iOS 11.0, *) {
                     setNeedsUpdateOfHomeIndicatorAutoHidden()

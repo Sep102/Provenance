@@ -315,6 +315,13 @@ const int GBMap[] = {gambatte::InputGetter::UP, gambatte::InputGetter::DOWN, gam
 
         (gamepad.leftShoulder.isPressed || gamepad.leftTrigger.isPressed) ? gb_pad[0] |= GBMap[PVGBButtonSelect] : gb_pad[0] &= ~GBMap[PVGBButtonSelect];
         (gamepad.rightShoulder.isPressed || gamepad.rightTrigger.isPressed) ? gb_pad[0] |= GBMap[PVGBButtonStart] : gb_pad[0] &= ~GBMap[PVGBButtonStart];
+
+        if (@available(iOS 13.0, *)) {
+            if (gamepad.buttonOptions.isPressed)
+                gb_pad[0] |= GBMap[PVGBButtonSelect];
+            if (gamepad.buttonMenu.isPressed)
+                gb_pad[0] |= GBMap[PVGBButtonStart];
+        }
     }
     else if ([self.controller1 gamepad])
     {

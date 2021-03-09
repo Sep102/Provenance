@@ -19,3 +19,16 @@ extension GCController {
         return false
     }
 }
+
+extension GCExtendedGamepad {
+    func getButtonHome() -> GCControllerButtonInput? {
+        if #available(iOS 14.0, *) {
+            if self.responds(to: Selector("buttonHome")) {
+                if let buttonHome = self.perform(Selector("buttonHome")) {
+                    return buttonHome.takeUnretainedValue() as? GCControllerButtonInput
+                }
+            }
+        }
+        return nil
+    }
+}

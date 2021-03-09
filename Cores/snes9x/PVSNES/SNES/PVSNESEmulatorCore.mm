@@ -947,6 +947,10 @@ static void FinalizeSamplesAudioCallback(void *)
             S9xReportButton(playerMask | PVSNESButtonStart, gamepad.rightTrigger.pressed);
             S9xReportButton(playerMask | PVSNESButtonSelect, gamepad.leftTrigger.pressed);
 
+            if (@available(iOS 13.0, *)) {
+                S9xReportButton(playerMask | PVSNESButtonStart, gamepad.buttonMenu.isPressed);
+                S9xReportButton(playerMask | PVSNESButtonSelect, gamepad.buttonOptions.isPressed);
+            }
         }
         else if ([controller gamepad])
         {

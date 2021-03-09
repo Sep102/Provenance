@@ -375,12 +375,18 @@ bool systemReadJoypads()
                 (gamepad.buttonA.isPressed || gamepad.buttonY.isPressed) ? pad[playerIndex] |= KEY_BUTTON_B : pad[playerIndex] &= ~KEY_BUTTON_B;
                 (gamepad.buttonB.isPressed || gamepad.buttonX.isPressed) ? pad[playerIndex] |= KEY_BUTTON_A : pad[playerIndex] &= ~KEY_BUTTON_A;
 
-                gamepad.leftShoulder.isPressed ? pad[playerIndex] |= KEY_BUTTON_L : pad[playerIndex] &= ~KEY_BUTTON_L;
+				gamepad.leftShoulder.isPressed ? pad[playerIndex] |= KEY_BUTTON_L : pad[playerIndex] &= ~KEY_BUTTON_L;
                 gamepad.rightShoulder.isPressed ? pad[playerIndex] |= KEY_BUTTON_R : pad[playerIndex] &= ~KEY_BUTTON_R;
 
 				gamepad.leftTrigger.isPressed ? pad[playerIndex] |= KEY_BUTTON_SELECT : pad[playerIndex] &= ~KEY_BUTTON_SELECT;
                 gamepad.rightTrigger.isPressed ? pad[playerIndex] |= KEY_BUTTON_START : pad[playerIndex] &= ~KEY_BUTTON_START;
-                
+
+                if (@available(iOS 13.0, *)) {
+                    if (gamepad.buttonOptions.isPressed)
+                        pad[playerIndex] |= KEY_BUTTON_SELECT;
+                    if (gamepad.buttonMenu.isPressed)
+                        pad[playerIndex] |= KEY_BUTTON_START;
+                }
             }
             else if ([controller gamepad])
             {
